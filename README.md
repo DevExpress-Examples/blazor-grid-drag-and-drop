@@ -38,7 +38,7 @@ This example also applies [CSS styles](./CS/GridDragAndDrop/wwwroot/css/site.css
 
 ## Drag Rows in One Grid
 
-When you drop a row, the Grid's rows are reordered. This example uses the [Sortable widget](./CS/GridDragAndDrop/Pages/Within.razor.js#L12) to reorder rows in UI. The [ReorderGridRows](./CS/GridDragAndDrop/Pages/Within.razor#L48) method updates the data source on the server side.
+When you drop a row, the Grid's rows are reordered. This example uses the [Sortable widget](./CS/GridDragAndDrop/Pages/Within.razor.js#L12) to reorder rows in the UI. The [ReorderGridRows](./CS/GridDragAndDrop/Pages/Within.razor#L48) method updates the data source on the server side.
 
 ## Drag Rows Between Two Grids
 
@@ -46,7 +46,7 @@ The example uses [Draggable and Droppable](.CS/GridDragAndDrop/Pages/Between.raz
 
 ## Drag Rows Between Two Grids and Drop at the Specified Position
 
-The [ReorderGridRows](./CS/GridDragAndDrop/Pages/KeepIndices.razor#L77) method identifies the source and target Grids. The [Sortable](./CS/GridDragAndDrop/Pages/KeepIndices.razor.js#L16) widget and the [connectWith](./CS/GridDragAndDrop/Pages/KeepIndices.razor.js#L23) property connect the source and target grids on the client side. After that, the server updates source collections.
+The [ReorderGridRows](./CS/GridDragAndDrop/Pages/KeepIndices.razor#L77) method identifies the source and target Grids. The [Sortable](./CS/GridDragAndDrop/Pages/KeepIndices.razor.js#L16) widget and the [connectWith](./CS/GridDragAndDrop/Pages/KeepIndices.razor.js#L23) property connect the source and target grids on the client side. Then, the server updates source collections.
 
 ## Files to Look At
 
