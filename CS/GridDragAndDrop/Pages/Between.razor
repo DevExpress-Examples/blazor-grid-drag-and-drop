@@ -1,0 +1,100 @@
+﻿@page "/between"
+
+@inject IJSRuntime JS
+
+<h1>Drag & Drop between Grids</h1>
+<br />
+
+<div style="display: flex">
+    <div style="width: 500px">
+        <h4>First Grid</h4>
+        <DxGrid @ref="FirstGrid"
+                Data="FirstGridItems"
+                CssClass="first-grid"
+                AllowSort="false"
+                CustomizeElement="Grid_CustomizeElement">
+            <Columns>
+                <DxGridDataColumn FieldName="Name" />
+            </Columns>
+        </DxGrid>
+    </div>
+    <div style="width: 500px; padding-left: 10px">
+        <h4>Second Grid</h4>
+        <DxGrid @ref="SecondGrid"
+                Data="SecondGridItems"
+                CssClass="second-grid"
+                AllowSort="false"
+                CustomizeElement="Grid_CustomizeElement">
+            <Columns>
+                <DxGridDataColumn FieldName="Name" />
+            </Columns>
+        </DxGrid>
+    </div>
+</div>
+
+@code {
+    bool ReInitializeDragging { get; set; }
+
+    IGrid FirstGrid { get; set; }
+    IGrid SecondGrid { get; set; }
+    ObservableCollection<GridDataItem> FirstGridItems { get; set; }
+    ObservableCollection<GridDataItem> SecondGridItems { get; set; }
+
+    DotNetObjectReference<Between> DotNetHelper { get; set; }
+    IJSObjectReference JsModule { get; set; }
+
+    protected override void OnInitialized() {
+        FirstGridItems = new ObservableCollection<GridDataItem>(
+            Enumerable.Range(0, 5).Select(i => new GridDataItem("First Name " + i))
+        );
+        SecondGridItems = new ObservableCollection<GridDataItem>(
+            Enumerable.Range(0, 5).Select(i => new GridDataItem("Second Name " + i))
+        );
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        if(firstRender) {
+            JsModule = await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/Between.razor.js");
+
+            DotNetHelper = DotNetObjectReference.Create(this);
+            await JsModule.InvokeVoidAsync("setDotNetHelper", DotNetHelper);
+            await JsModule.InvokeVoidAsync("initialize", GetGridSelector(FirstGrid), GetGridSelector(SecondGrid));
+        } else {
+            if(ReInitializeDragging) {
+                ReInitializeDragging = false;
+                await JsModule.InvokeVoidAsync("initialize", GetGridSelector(FirstGrid), GetGridSelector(SecondGrid));
+            }
+        }
+    }
+
+    void Grid_CustomizeElement(GridCustomizeElementEventArgs e) {
+        if(e.ElementType == GridElementType.DataRow)
+            e.Attributes["data-visible-index"] = e.VisibleIndex;
+    }
+
+    [JSInvokable]
+    public void MoveGridRow(int draggableRowVisibleIndex, bool fromFirstGrid) {
+        var sourceGrid = fromFirstGrid ? FirstGrid : SecondGrid;
+        var sourceItems = fromFirstGrid ? FirstGridItems : SecondGridItems;
+        var targetItems = fromFirstGrid ? SecondGridItems : FirstGridItems;
+
+        var sourceItem = (GridDataItem)sourceGrid.GetDataItem(draggableRowVisibleIndex);
+        sourceItems.Remove(sourceItem);
+        targetItems.Add(sourceItem);
+
+        ReInitializeDragging = true;
+        StateHasChanged();
+    }
+
+    static string GetGridSelector(IGrid grid) {
+        return string.Join(
+            string.Empty,
+            grid.CssClass
+                .Split(" ")
+                .Where(i => !string.IsNullOrWhiteSpace(i))
+                .Select(i => "." + i.Trim())
+        );
+    }
+
+    public record GridDataItem(string Name);
+}

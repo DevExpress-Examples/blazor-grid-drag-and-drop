@@ -1,0 +1,69 @@
+﻿@page "/within"
+
+@inject IJSRuntime JS
+
+<h1>Drag & Drop in Grid</h1>
+<br />
+
+<div style="width: 500px">
+    <DxGrid @ref="Grid"
+            Data="Items"
+            AllowSort="false"
+            CustomizeElement="Grid_CustomizeElement">
+        <Columns>
+            <DxGridDataColumn FieldName="Name" />
+        </Columns>
+    </DxGrid>
+</div>
+
+@code {
+    IGrid Grid { get; set; }
+    ObservableCollection<GridDataItem> Items { get; set; }
+
+    DotNetObjectReference<Within> DotNetHelper { get; set; }
+    IJSObjectReference JsModule { get; set; }
+
+    protected override void OnInitialized() {
+        Items = new ObservableCollection<GridDataItem>(
+            Enumerable.Range(0, 10).Select(i => new GridDataItem("Name " + i))
+        );
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        if(firstRender) {
+            JsModule = await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/Within.razor.js");
+
+            DotNetHelper = DotNetObjectReference.Create(this);
+            await JsModule.InvokeVoidAsync("setDotNetHelper", DotNetHelper);
+            await JsModule.InvokeVoidAsync("initialize");
+        }
+    }
+
+    void Grid_CustomizeElement(GridCustomizeElementEventArgs e) {
+        if(e.ElementType == GridElementType.DataRow)
+            e.Attributes["data-visible-index"] = e.VisibleIndex;
+    }
+
+    [JSInvokable]
+    public void ReorderGridRows(int draggableRowVisibleIndex, int prevRowVisibleIndex, int nextRowVisibleIndex) {
+        var hasPrevRow = prevRowVisibleIndex > -1;
+        var hasNextRow = nextRowVisibleIndex > -1;
+
+        var sourceItem = (GridDataItem)Grid.GetDataItem(draggableRowVisibleIndex);
+        var hasSamePosition = hasPrevRow && draggableRowVisibleIndex == prevRowVisibleIndex + 1 || hasNextRow && draggableRowVisibleIndex == nextRowVisibleIndex - 1;
+        if(hasSamePosition)
+            return;
+
+        var moveTop = false;
+        if(!hasPrevRow || prevRowVisibleIndex <= draggableRowVisibleIndex)
+            moveTop = true;
+        var newVisibleIndex = moveTop ? nextRowVisibleIndex : prevRowVisibleIndex;
+
+        var sourceItemIndex = Items.IndexOf(sourceItem);
+        var newItemIndex = Items.IndexOf((GridDataItem)Grid.GetDataItem(newVisibleIndex));
+        Items.Move(sourceItemIndex, newItemIndex);
+
+    }
+
+    public record GridDataItem(string Name);
+}
