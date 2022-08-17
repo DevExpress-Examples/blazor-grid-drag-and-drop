@@ -3,7 +3,7 @@
 [![](https://img.shields.io/badge/📖_How_to_use_DevExpress_Examples-e9f6fc?style=flat-square)](https://docs.devexpress.com/GeneralInformation/403183)
 <!-- default badges end -->
 
-# Blazor Grid - Implement Drag and Drop Functionality
+# Blazor Grid - Implement Row Drag and Drop Functionality
 
 You can implement the following drag and drop variants:
 
@@ -38,15 +38,15 @@ This example also applies [CSS styles](./CS/GridDragAndDrop/wwwroot/css/site.css
 
 ## Drag Rows in One Grid
 
-When you drop a row, the Grid's rows are reordered. The [ReorderGridRows](./CS/GridDragAndDrop/Pages/Within.razor#L48) method uses the Sortable widget to reorder rows.
+When you drop a row, the Grid's rows are reordered. This example uses the [Sortable widget](./CS/GridDragAndDrop/Pages/Within.razor.js#L12) to reorder rows in the UI. The [ReorderGridRows](./CS/GridDragAndDrop/Pages/Within.razor#L48) method updates the data source on the server.
 
 ## Drag Rows Between Two Grids
 
-The [MoveGridRow](./CS/GridDragAndDrop/Pages/Between.razor#L76) method uses the Draggable and Droppable widgets to identify the source and target Grids. When you drop a row, the server action is executed to update data collections.
+The example uses [Draggable and Droppable](.CS/GridDragAndDrop/Pages/Between.razor.js#L12) widgets to implement the UI. The [MoveGridRow](./CS/GridDragAndDrop/Pages/Between.razor#L76) identifies the source and target Grids. When you drop a row, the server updates data collections.
 
 ## Drag Rows Between Two Grids and Drop at the Specified Position
 
-The [ReorderGridRows](./CS/GridDragAndDrop/Pages/KeepIndices.razor#L77) method uses the Sortable widgets and the [connectWith](./CS/GridDragAndDrop/Pages/KeepIndices.razor.js#L23) property to identify and connect the source and target Grids. After that, the server updates source collections.
+The [ReorderGridRows](./CS/GridDragAndDrop/Pages/KeepIndices.razor#L77) method identifies the source and target Grids. The [Sortable](./CS/GridDragAndDrop/Pages/KeepIndices.razor.js#L16) widget and the [connectWith](./CS/GridDragAndDrop/Pages/KeepIndices.razor.js#L23) property connect the source and target grids on the client. Then, the server updates source collections.
 
 ## Files to Look At
 
