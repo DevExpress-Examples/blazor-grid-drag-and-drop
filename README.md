@@ -42,7 +42,7 @@ When you drop a row, the Grid's rows are reordered. This example uses the [Sorta
 
 ## Drag Rows Between Two Grids
 
-The example uses [Draggable and Droppable](.CS/GridDragAndDrop/Pages/Between.razor.js#L12) widgets to allow users to drag and drop rows between grids on the client side. The [MoveGridRow](./CS/GridDragAndDrop/Pages/Between.razor#L76) identifies the source and target Grids. When you drop a row, the server updates data collections.
+The example uses [Draggable and Droppable](.CS/GridDragAndDrop/Pages/Between.razor.js#L12) widgets to implement the UI. The [MoveGridRow](./CS/GridDragAndDrop/Pages/Between.razor#L76) identifies the source and target Grids. When you drop a row, the server updates data collections.
 
 ## Drag Rows Between Two Grids and Drop at the Specified Position
 
