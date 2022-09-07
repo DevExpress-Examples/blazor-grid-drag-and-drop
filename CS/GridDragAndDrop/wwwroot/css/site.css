@@ -1,4 +1,4 @@
-@import url('open.iconic/font/css/open-iconic-bootstrap.min.css');
+﻿@import url('open.iconic/font/css/open-iconic-bootstrap.min.css');
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -51,13 +51,17 @@ html, body {
     }
 
 .ui-state-highlight {
-    background-color: gray;
-}
-
-.ui-state-default {
-    background: yellow;
+    background-color: rgba(var(--bs-primary-rgb), .3);
 }
 
 .ui-state-hover {
-    background: green;
+    background: rgba(var(--bs-primary-rgb), .3);
+}
+
+.ui-draggable-dragging {
+    box-shadow: 0 2px 6px 0 rgb(0 0 0 / 12%);
+}
+
+.dxbs-grid .dxbs-grid-table > tbody > tr[data-visible-index] {
+    cursor: pointer;
 }

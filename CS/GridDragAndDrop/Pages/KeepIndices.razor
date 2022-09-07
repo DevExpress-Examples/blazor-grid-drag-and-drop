@@ -46,10 +46,22 @@
 
     protected override void OnInitialized() {
         FirstGridItems = new ObservableCollection<GridDataItem>(
-            Enumerable.Range(0, 5).Select(i => new GridDataItem("First Name " + i))
+            new List<GridDataItem>() {
+                new GridDataItem("Beverages"),
+                new GridDataItem("Seafood"),
+                new GridDataItem("Grains"),
+                new GridDataItem("Confections"),
+                new GridDataItem("Dairy Products")
+            }
         );
         SecondGridItems = new ObservableCollection<GridDataItem>(
-            Enumerable.Range(0, 5).Select(i => new GridDataItem("Second Name " + i))
+            new List<GridDataItem>() {
+                new GridDataItem("Cereals"),
+                new GridDataItem("Meat"),
+                new GridDataItem("Poultry"),
+                new GridDataItem("Produce"),
+                new GridDataItem("Frozen Entrees")
+            }
         );
     }
 
