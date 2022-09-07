@@ -25,7 +25,18 @@
 
     protected override void OnInitialized() {
         Items = new ObservableCollection<GridDataItem>(
-            Enumerable.Range(0, 10).Select(i => new GridDataItem("Name " + i))
+            new List<GridDataItem>() {
+                new GridDataItem("Beverages"),
+                new GridDataItem("Seafood"),
+                new GridDataItem("Grains"),
+                new GridDataItem("Confections"),
+                new GridDataItem("Dairy Products"),
+                new GridDataItem("Cereals"),
+                new GridDataItem("Meat"),
+                new GridDataItem("Poultry"),
+                new GridDataItem("Produce"),
+                new GridDataItem("Frozen Entrees")
+            }
         );
     }
 
