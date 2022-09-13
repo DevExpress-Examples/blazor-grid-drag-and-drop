@@ -4,24 +4,24 @@
 [![](https://img.shields.io/badge/📖_How_to_use_DevExpress_Examples-e9f6fc?style=flat-square)](https://docs.devexpress.com/GeneralInformation/403183)
 <!-- default badges end -->
 
-# Blazor Grid - Implement Drag and Drop Functionality
+# Blazor Grid - Incorporate Drag and Drop Support
 
-You can implement the following drag and drop variants:
+The DevExpress Blazor Grid allows you to incorporate drag and drop support for the following usage scenarios:
 
-- Drag rows in one grid
+- Drag rows in a single grid (reorder rows)
 - Drag rows between two grids
-- Drag rows between two grids and drop at the specified position
+- Drag rows between two grids and drop at a specified position
 
 ![Drag between two grids](result.png)
 
-All these variants are based on the [ObservableCollection](https://docs.microsoft.com/en-us/dotnet/api/system.collections.objectmodel.observablecollection-1?view=net-6.0) data sources. In this case, the Grid component reacts to changes instantly. The drag and drop feature uses jQuery widgets: [draggable](https://jqueryui.com/draggable/), [droppable](https://jqueryui.com/droppable/), and [sortable](https://jqueryui.com/sortable/). Add jQuery links to the `Layout.csthml` file:
+The three options listed above are based on [ObservableCollection](https://docs.microsoft.com/en-us/dotnet/api/system.collections.objectmodel.observablecollection-1?view=net-6.0) data sources. When used in this manner, the Grid component reacts to changes instantly. Our drag and drop implementation uses three jQuery widgets ([draggable](https://jqueryui.com/draggable/), [droppable](https://jqueryui.com/droppable/), and [sortable](https://jqueryui.com/sortable/)). To begin, simply add jQuery links to the Layout.csthml file as follows:
 
 ```
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 ```
 
-This example also applies [CSS styles](./CS/GridDragAndDrop/wwwroot/css/site.css) to visualize the feature:
+This GitHub sample also applies [CSS styles](./CS/GridDragAndDrop/wwwroot/css/site.css) to visualize drag and drop operations:
 
 ```
 .ui-state-highlight {
@@ -39,15 +39,15 @@ This example also applies [CSS styles](./CS/GridDragAndDrop/wwwroot/css/site.css
 
 ## Drag Rows in One Grid
 
-When you drop a row, the Grid's rows are reordered. The [ReorderGridRows](./CS/GridDragAndDrop/Pages/Within.razor#L48) method uses the Sortable widget to reorder rows.
+When you drop a row, grid rows are automatically reordered. The [ReorderGridRows](./CS/GridDragAndDrop/Pages/Within.razor#L48) method uses the Sortable widget to reorder rows.
 
 ## Drag Rows Between Two Grids
 
-The [MoveGridRow](./CS/GridDragAndDrop/Pages/Between.razor#L76) method uses the Draggable and Droppable widgets to identify the source and target Grids. When you drop a row, the server action is executed to update data collections.
+The [MoveGridRow](./CS/GridDragAndDrop/Pages/Between.razor#L76) method uses Draggable and Droppable widgets to identify source and target Grids. When you drop a row, a server action is executed to update data collections.
 
 ## Drag Rows Between Two Grids and Drop at the Specified Position
 
-The [ReorderGridRows](./CS/GridDragAndDrop/Pages/KeepIndices.razor#L77) method uses the Sortable widgets and the [connectWith](./CS/GridDragAndDrop/Pages/KeepIndices.razor.js#L23) property to identify and connect the source and target Grids. After that, the server updates source collections.
+The [ReorderGridRows](./CS/GridDragAndDrop/Pages/KeepIndices.razor#L77) method uses Sortable widget and the [connectWith](./CS/GridDragAndDrop/Pages/KeepIndices.razor.js#L23) property to identify and connect the source and target Grids. After a drag/drop operation, the server updates source collections.
 
 ## Files to Look At
 
