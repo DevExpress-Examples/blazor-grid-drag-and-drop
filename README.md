@@ -14,7 +14,7 @@ The DevExpress Blazor Grid allows you to incorporate drag and drop support for t
 
 ![Drag between two grids](result.png)
 
-The three options listed above are based on [ObservableCollection](https://docs.microsoft.com/en-us/dotnet/api/system.collections.objectmodel.observablecollection-1?view=net-6.0) data sources. When used in this manner, the Grid component reacts to changes instantly. Our drag and drop implementation uses three jQuery widgets ([draggable](https://jqueryui.com/draggable/), [droppable](https://jqueryui.com/droppable/), and [sortable](https://jqueryui.com/sortable/)). To begin, simply add jQuery links to the Layout.csthml file as follows:
+The three options listed above are based on [ObservableCollection](https://docs.microsoft.com/en-us/dotnet/api/system.collections.objectmodel.observablecollection-1?view=net-6.0) data sources. When used in this manner, the Grid component reacts to changes instantly. Our drag and drop implementation uses three jQuery widgets ([draggable](https://jqueryui.com/draggable/), [droppable](https://jqueryui.com/droppable/), and [sortable](https://jqueryui.com/sortable/)). To begin, add jQuery links to the Layout.csthml file as follows:
 
 ```
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
