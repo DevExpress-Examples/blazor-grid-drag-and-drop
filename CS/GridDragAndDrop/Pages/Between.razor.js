@@ -1,4 +1,4 @@
-﻿var gridTbodySelector = " .dxbs-grid-table > tbody";
+﻿var gridTbodySelector = " .dxbl-grid-table > tbody";
 
 var dotNetHelper;
 function setDotNetHelper(helper) {

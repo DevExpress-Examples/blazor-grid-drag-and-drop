@@ -1,4 +1,4 @@
-﻿var gridTbodySelector = "dxbl-grid .dxbs-grid-table > tbody";
+﻿var gridTbodySelector = ".dxbl-grid-table > tbody";
 
 var dotNetHelper;
 function setDotNetHelper(helper) {
@@ -37,6 +37,7 @@ function initialize() {
                 var nextRow = row.nextElementSibling;
 
                 window.setTimeout(async function () {
+                    e.placeholder.dispose();
                     await dotNetHelper.invokeMethodAsync("ReorderGridRows", getVisibleIndex(row), getVisibleIndex(prevRow), getVisibleIndex(nextRow));
                     $(gridTbodySelector).sortable("cancel");
                 }, 50);

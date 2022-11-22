@@ -1,4 +1,4 @@
-﻿var gridTbodySelector = ".dxbs-grid-table > tbody";
+﻿var gridTbodySelector = ".dxbl-grid-table > tbody";
 
 var dotNetHelper;
 function setDotNetHelper(helper) {
@@ -48,6 +48,7 @@ function initialize(firstGridSelector, secondGridSelector) {
                 delete row.isFirstGridRow;
 
                 window.setTimeout(function () {
+                    e.placeholder.dispose();
                     $(sortableSelector).sortable("cancel");
                     $(sortableSelector).sortable("destroy");
                     dotNetHelper.invokeMethodAsync("ReorderGridRows", getVisibleIndex(row), getVisibleIndex(prevRow), getVisibleIndex(nextRow), isDraggableRowFromFirstGrid, isRowDroppedToFirstGrid);

@@ -62,6 +62,6 @@ html, body {
     box-shadow: 0 2px 6px 0 rgb(0 0 0 / 12%);
 }
 
-.dxbs-grid .dxbs-grid-table > tbody > tr[data-visible-index] {
+.dxbl-grid .dxbl-grid-table > tbody > tr[data-visible-index] {
     cursor: pointer;
 }
