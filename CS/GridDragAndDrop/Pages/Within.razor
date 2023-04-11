@@ -7,7 +7,7 @@
 
 <div style="width: 500px">
     <DxGrid @ref="Grid"
-            Data="Items"
+            Data="Items" @key="@myKey"
             AllowSort="false"
             CustomizeElement="Grid_CustomizeElement">
         <Columns>
@@ -17,7 +17,10 @@
 </div>
 
 @code {
+    bool ReInitializeDragging { get; set; }
+
     IGrid Grid { get; set; }
+    Guid myKey { get; set; } = Guid.NewGuid();
     ObservableCollection<GridDataItem> Items { get; set; }
 
     DotNetObjectReference<Within> DotNetHelper { get; set; }
@@ -48,6 +51,12 @@
             await JsModule.InvokeVoidAsync("setDotNetHelper", DotNetHelper);
             await JsModule.InvokeVoidAsync("initialize");
         }
+        else {
+            if (ReInitializeDragging) {
+                ReInitializeDragging = false;
+                await JsModule.InvokeVoidAsync("initialize");
+            }
+        }
     }
 
     void Grid_CustomizeElement(GridCustomizeElementEventArgs e) {
@@ -74,6 +83,9 @@
         var newItemIndex = Items.IndexOf((GridDataItem)Grid.GetDataItem(newVisibleIndex));
         Items.Move(sourceItemIndex, newItemIndex);
 
+        myKey = Guid.NewGuid();
+        ReInitializeDragging = true;
+        StateHasChanged();
     }
 
     public record GridDataItem(string Name);

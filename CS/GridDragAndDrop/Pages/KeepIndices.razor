@@ -9,7 +9,7 @@
     <div style="width: 500px">
         <h4>First Grid</h4>
         <DxGrid @ref="FirstGrid"
-                Data="FirstGridItems"
+                Data="FirstGridItems" @key=myKey1
                 CssClass="first-grid"
                 AllowSort="false"
                 CustomizeElement="Grid_CustomizeElement">
@@ -21,10 +21,9 @@
     <div style="width: 500px; padding-left: 10px">
         <h4>Second Grid</h4>
         <DxGrid @ref="SecondGrid"
-                Data="SecondGridItems"
+                Data="SecondGridItems" @key=myKey2
                 CssClass="second-grid"
                 AllowSort="false"
-
                 CustomizeElement="Grid_CustomizeElement">
             <Columns>
                 <DxGridDataColumn FieldName="Name" />
@@ -38,6 +37,8 @@
 
     IGrid FirstGrid { get; set; }
     IGrid SecondGrid { get; set; }
+    Guid myKey1 { get; set; } = Guid.NewGuid();
+    Guid myKey2 { get; set; } = Guid.NewGuid();
     ObservableCollection<GridDataItem> FirstGridItems { get; set; }
     ObservableCollection<GridDataItem> SecondGridItems { get; set; }
 
@@ -51,29 +52,31 @@
                 new GridDataItem("Seafood"),
                 new GridDataItem("Grains"),
                 new GridDataItem("Confections"),
-                new GridDataItem("Dairy Products")
-            }
-        );
-        SecondGridItems = new ObservableCollection<GridDataItem>(
-            new List<GridDataItem>() {
+                new GridDataItem("Dairy Products"),
                 new GridDataItem("Cereals"),
                 new GridDataItem("Meat"),
                 new GridDataItem("Poultry"),
                 new GridDataItem("Produce"),
                 new GridDataItem("Frozen Entrees")
+                        }
+        );
+        SecondGridItems = new ObservableCollection<GridDataItem>(
+            new List<GridDataItem>() {
+
             }
         );
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender) {
-        if(firstRender) {
+        if (firstRender) {
             JsModule = await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/KeepIndices.razor.js");
 
             DotNetHelper = DotNetObjectReference.Create(this);
             await JsModule.InvokeVoidAsync("setDotNetHelper", DotNetHelper);
             await JsModule.InvokeVoidAsync("initialize", GetGridSelector(FirstGrid), GetGridSelector(SecondGrid));
-        } else {
-            if(ReInitializeDragging) {
+        }
+        else {
+            if (ReInitializeDragging) {
                 ReInitializeDragging = false;
                 await JsModule.InvokeVoidAsync("initialize", GetGridSelector(FirstGrid), GetGridSelector(SecondGrid));
             }
@@ -81,7 +84,7 @@
     }
 
     void Grid_CustomizeElement(GridCustomizeElementEventArgs e) {
-        if(e.ElementType == GridElementType.DataRow)
+        if (e.ElementType == GridElementType.DataRow)
             e.Attributes["data-visible-index"] = e.VisibleIndex;
     }
 
@@ -97,11 +100,11 @@
         var hasPrevRow = prevRowVisibleIndex > -1;
         var hasNextRow = nextRowVisibleIndex > -1;
 
-        if(sourceGrid == targetGrid) {
+        if (sourceGrid == targetGrid) {
             var hasSamePosition = hasPrevRow && draggableRowVisibleIndex == prevRowVisibleIndex + 1 || hasNextRow && draggableRowVisibleIndex == nextRowVisibleIndex - 1;
-            if(!hasSamePosition) {
+            if (!hasSamePosition) {
                 var moveTop = false;
-                if(!hasPrevRow || prevRowVisibleIndex <= draggableRowVisibleIndex)
+                if (!hasPrevRow || prevRowVisibleIndex <= draggableRowVisibleIndex)
                     moveTop = true;
                 var newVisibleIndex = moveTop ? nextRowVisibleIndex : prevRowVisibleIndex;
 
@@ -109,12 +112,14 @@
                 var newItemIndex = sourceItems.IndexOf((GridDataItem)sourceGrid.GetDataItem(newVisibleIndex));
                 sourceItems.Move(sourceItemIndex, newItemIndex);
             }
-        } else {
+        }
+        else {
             var newItemIndex = 0;
-            if(hasNextRow) {
+            if (hasNextRow) {
                 var nextItem = (GridDataItem)targetGrid.GetDataItem(nextRowVisibleIndex);
                 newItemIndex = targetItems.IndexOf(nextItem);
-            } else if(hasPrevRow) {
+            }
+            else if (hasPrevRow) {
                 var prevItem = (GridDataItem)targetGrid.GetDataItem(prevRowVisibleIndex);
                 newItemIndex = targetItems.IndexOf(prevItem) + 1;
             }
@@ -123,6 +128,8 @@
             targetItems.Insert(newItemIndex, sourceItem);
         }
 
+        myKey1 = Guid.NewGuid();
+        myKey2 = Guid.NewGuid();
         ReInitializeDragging = true;
         StateHasChanged();
     }
