@@ -56,7 +56,7 @@ function initialize(firstGridSelector, secondGridSelector) {
 }
 function getVisibleIndex(row) {
     var visibleIndex = -1;
-    if (row && Object.keys(row.dataset).length > 0)
+    if (row && row.getAttribute("data-visible-index") && Object.keys(row.dataset).length > 0)
         visibleIndex = parseInt(row.dataset.visibleIndex);
     return visibleIndex;
 }
