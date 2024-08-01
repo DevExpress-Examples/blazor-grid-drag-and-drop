@@ -30,6 +30,7 @@ function initialize() {
                 }
 
                 row.style.backgroundColor = "white";
+                ui.placeholder[0].dataset.visibleIndex = -123456;
             },
             stop: function (e, ui) {
                 var row = ui.item[0];
