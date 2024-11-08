@@ -7,61 +7,41 @@
 
 # Blazor Grid - Incorporate Drag and Drop Support
 
-The DevExpress Blazor Grid allows you to incorporate drag and drop support for the following usage scenarios:
-
-- Drag rows in a single grid (reorder rows)
-- Drag rows between two grids
-- Drag rows between two grids and drop at a specified position
+The DevExpress Blazor Grid supports drag and drop operations.
 
 ![Drag between two grids](result.png)
 
-The three options listed above are based on [ObservableCollection](https://docs.microsoft.com/en-us/dotnet/api/system.collections.objectmodel.observablecollection-1?view=net-6.0) data sources. When used in this manner, the Grid component reacts to changes instantly. Our drag and drop implementation uses three jQuery widgets ([draggable](https://jqueryui.com/draggable/), [droppable](https://jqueryui.com/droppable/), and [sortable](https://jqueryui.com/sortable/)). To begin, add jQuery links to the Layout.csthml file as follows:
+Use the following API members to activate this feature for your Grids:
 
-```
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script type="text/javascript" src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-```
+- [AllowDragRows](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.AllowDragRows) - Specifies whether users can start the row drag operation.
+- [AllowedDropTarget](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.AllowedDropTarget) - Specifies allowed drag and drop targets.
 
-This GitHub sample also applies [CSS styles](./CS/GridDragAndDrop/wwwroot/css/site.css) to visualize drag and drop operations:
+When a user drops rows, the [ItemsDropped](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.ItemsDropped) event fires. In its handler, update the data source: insert rows at the drop position and remove them from the initial position, if required.
 
-```
-.ui-state-highlight {
-    background-color: rgba(var(--bs-primary-rgb), .3);
-}
+## Reorder Rows in a Grid
 
-.ui-state-hover {
-    background: rgba(var(--bs-primary-rgb), .3);
-}
+If you want to active the reorder capability, set the [AllowDragRows](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.AllowDragRows) property to `true`. You can test this usage scenario on the **Reorder** page.
 
-.ui-draggable-dragging {
-    box-shadow: 0 2px 6px 0 rgb(0 0 0 / 12%);
-}
-```
+## Drag Rows Between Components
 
-## Drag Rows in One Grid
+To activate row dragging between components, do the following:
 
-When you drop a row, grid rows are automatically reordered. The [ReorderGridRows](./CS/GridDragAndDrop/Pages/Within.razor#L68) method uses the Sortable widget to reorder rows.
+- Set the [AllowDragRows](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.AllowDragRows) property to `true`.
+- Set the [AllowedDropTarget](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.AllowedDropTarget) to `External`. You can use the `All` option if you want to also allow reordering.
 
-## Drag Rows Between Two Grids
+The [DropTargetMode](https://docs.devexpress.devx/Blazor/DevExpress.Blazor.DxGrid.DropTargetMode) property specifies whether the drop position is defined by [TargetItem](https://docs.devexpress.com/Blazor/DevExpress.Blazor.GridItemsDroppedEventArgs.TargetItem) and [DropPosition](https://docs.devexpress.com/Blazor/DevExpress.Blazor.GridItemsDroppedEventArgs.DropPosition) properties. Otherwise, the target indicator highlights the entire data area. You need to implement custom insertion logic (for example, if your data is sorted or grouped) in the [ItemsDropped](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.ItemsDropped) event handler. 
 
-The [MoveGridRow](./CS/GridDragAndDrop/Pages/Between.razor#L88) method uses Draggable and Droppable widgets to identify source and target Grids. When you drop a row, a server action is executed to update data collections.
-
-## Drag Rows Between Two Grids and Drop at the Specified Position
-
-The [ReorderGridRows](./CS/GridDragAndDrop/Pages/KeepIndices.razor#L91) method uses Sortable widget and the [connectWith](./CS/GridDragAndDrop/Pages/KeepIndices.razor.js#L23) property to identify and connect the source and target Grids. After a drag/drop operation, the server updates source collections.
+You can test this usage scenario on the **Between** page.
 
 ## Files to Look At
 
 - [Between.razor](./CS/GridDragAndDrop/Pages/Between.razor)
-- [Between.razor.js](./CS/GridDragAndDrop/Pages/Between.razor.js)
-- [KeepIndices.razor](./CS/GridDragAndDrop/Pages/KeepIndices.razor)
-- [KeepIndices.razor.js](./CS/GridDragAndDrop/Pages/KeepIndices.razor.js)
-- [Within.razor](./CS/GridDragAndDrop/Pages/Within.razor)
-- [Within.razor.js](./CS/GridDragAndDrop/Pages/Within.razor.js)
+- [Reorder.razor](./CS/GridDragAndDrop/Pages/Reorder.razor)
 
 ## Documentation
 
-- [DxGrid](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid)
+- [Drag and Drop Rows in Blazor Grid](https://docs.devexpress.com/Blazor/405231/components/grid/drag-and-drop-rows)
+
 <!-- feedback -->
 ## Does this example address your development requirements/objectives?
 

@@ -46,22 +46,6 @@ html, body {
     color: white;
 }
 
-    .blazor-error-boundary::after {
-        content: "An error has occurred."
-    }
-
-.ui-state-highlight {
-    background-color: rgba(var(--bs-primary-rgb), .3);
-}
-
-.ui-state-hover {
-    background: rgba(var(--bs-primary-rgb), .3);
-}
-
-.ui-draggable-dragging {
-    box-shadow: 0 2px 6px 0 rgb(0 0 0 / 12%);
-}
-
-.dxbl-grid .dxbl-grid-table > tbody > tr[data-visible-index] {
-    cursor: pointer;
+.blazor-error-boundary::after {
+    content: "An error has occurred."
 }
