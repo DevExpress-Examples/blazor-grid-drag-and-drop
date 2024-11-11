@@ -12,21 +12,21 @@ The DevExpress Blazor Grid supports drag and drop operations.
 
 Use the following API members to activate this feature for your Grids:
 
-- [AllowDragRows](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.AllowDragRows) - Specifies whether users can start the row drag operation.
-- [AllowedDropTarget](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.AllowedDropTarget) - Specifies allowed drag and drop targets.
+- [AllowDragRows](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.AllowDragRows) - Specifies whether users can start row drag-and-drop operations.
+- [AllowedDropTarget](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.AllowedDropTarget) - Specifies allowed drag-and-drop targets.
 
 When a user drops rows, the [ItemsDropped](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.ItemsDropped) event fires. In its handler, update the data source: insert rows at the drop position and remove them from the initial position, if required.
 
 ## Reorder Rows in a Grid
 
-If you want to active the reorder capability, set the [AllowDragRows](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.AllowDragRows) property to `true`. You can test this usage scenario on the **Reorder** page.
+If you want to let users reorder rows, set the [AllowDragRows](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.AllowDragRows) property to `true`. You can test this usage scenario on the **Reorder** page.
 
 ## Drag Rows Between Components
 
-To activate row dragging between components, do the following:
+To let users drag rows between components, do the following:
 
 - Set the [AllowDragRows](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.AllowDragRows) property to `true`.
-- Set the [AllowedDropTarget](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.AllowedDropTarget) to `External`. You can use the `All` option if you want to also allow reordering.
+- Set the [AllowedDropTarget](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.AllowedDropTarget) to `External`. You can use `All` if you also want to allow row reordering.
 
 The [DropTargetMode](https://docs.devexpress.devx/Blazor/DevExpress.Blazor.DxGrid.DropTargetMode) property specifies whether the drop position is defined by [TargetItem](https://docs.devexpress.com/Blazor/DevExpress.Blazor.GridItemsDroppedEventArgs.TargetItem) and [DropPosition](https://docs.devexpress.com/Blazor/DevExpress.Blazor.GridItemsDroppedEventArgs.DropPosition) properties. Otherwise, the target indicator highlights the entire data area. You need to implement custom insertion logic (for example, if your data is sorted or grouped) in the [ItemsDropped](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.ItemsDropped) event handler. 
 
