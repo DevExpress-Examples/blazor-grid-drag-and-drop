@@ -1,0 +1,46 @@
+﻿@page "/reorder"
+
+<h1>Reorder Rows in a Grid</h1>
+<br />
+
+<div style="width: 500px">
+    <DxGrid Data="Items"
+            AllowDragRows="true"
+            ItemsDropped="Grid_ItemsDropped">
+        <Columns>
+            <DxGridDataColumn FieldName="Name" />
+        </Columns>
+    </DxGrid>
+</div>
+
+@code {
+    ObservableCollection<GridDataItem> Items { get; set; }
+    public record GridDataItem(string Name);
+
+    protected override void OnInitialized() {
+        Items = new ObservableCollection<GridDataItem>(
+            new List<GridDataItem>() {
+                new GridDataItem("Beverages"),
+                new GridDataItem("Seafood"),
+                new GridDataItem("Grains"),
+                new GridDataItem("Confections"),
+                new GridDataItem("Dairy Products"),
+                new GridDataItem("Cereals"),
+                new GridDataItem("Meat"),
+                new GridDataItem("Poultry"),
+                new GridDataItem("Produce"),
+                new GridDataItem("Frozen Entrees")
+            }
+        );
+    }
+
+    void Grid_ItemsDropped(GridItemsDroppedEventArgs args) {
+        var droppedItem = (GridDataItem)args.DroppedItems[0];
+        Items.Remove(droppedItem);
+        var targetItem = (GridDataItem)args.TargetItem;
+        var index = targetItem != null
+            ? Items.IndexOf(targetItem) + (args.DropPosition == GridItemDropPosition.After ? 1 : 0)
+            : Items.Count;
+        Items.Insert(index, droppedItem);
+    }
+}

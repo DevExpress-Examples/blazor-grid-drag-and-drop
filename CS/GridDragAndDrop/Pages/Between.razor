@@ -1,30 +1,29 @@
 ﻿@page "/between"
 
-@inject IJSRuntime JS
-
-<h1>Drag & Drop between Grids</h1>
+<h1>Drag & Drop Between Components</h1>
 <br />
 
 <div style="display: flex">
     <div style="width: 500px">
-        <h4>First Grid</h4>
-        <DxGrid @ref="FirstGrid"
-                Data="FirstGridItems"
-                CssClass="first-grid"
-                AllowSort="false"
-                CustomizeElement="Grid_CustomizeElement">
+        <h2>First Grid</h2>
+        <DxGrid Data="FirstGridItems"
+                AllowDragRows="true"
+                AllowedDropTarget="GridAllowedDropTarget.External"
+                ItemsDropped="Grid_ItemsDroppedKeepIndicies"
+                AllowSort="false">
             <Columns>
                 <DxGridDataColumn FieldName="Name" />
             </Columns>
         </DxGrid>
     </div>
     <div style="width: 500px; padding-left: 10px">
-        <h4>Second Grid</h4>
-        <DxGrid @ref="SecondGrid"
-                Data="SecondGridItems"
-                CssClass="second-grid"
-                AllowSort="false"
-                CustomizeElement="Grid_CustomizeElement">
+        <h2>Second Grid</h2>
+        <DxGrid Data="SecondGridItems"
+                AllowDragRows="true"
+                AllowedDropTarget="GridAllowedDropTarget.External"
+                DropTargetMode="GridDropTargetMode.Component"
+                ItemsDropped="Grid_ItemsDroppedDiscardIndicies"
+                AllowSort="false">
             <Columns>
                 <DxGridDataColumn FieldName="Name" />
             </Columns>
@@ -33,15 +32,11 @@
 </div>
 
 @code {
-    bool ReInitializeDragging { get; set; }
-
     IGrid FirstGrid { get; set; }
     IGrid SecondGrid { get; set; }
     ObservableCollection<GridDataItem> FirstGridItems { get; set; }
     ObservableCollection<GridDataItem> SecondGridItems { get; set; }
-
-    DotNetObjectReference<Between> DotNetHelper { get; set; }
-    IJSObjectReference JsModule { get; set; }
+    public record GridDataItem(string Name);
 
     protected override void OnInitialized() {
         FirstGridItems = new ObservableCollection<GridDataItem>(
@@ -64,49 +59,19 @@
         );
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender) {
-        if(firstRender) {
-            JsModule = await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/Between.razor.js");
-
-            DotNetHelper = DotNetObjectReference.Create(this);
-            await JsModule.InvokeVoidAsync("setDotNetHelper", DotNetHelper);
-            await JsModule.InvokeVoidAsync("initialize", GetGridSelector(FirstGrid), GetGridSelector(SecondGrid));
-        } else {
-            if(ReInitializeDragging) {
-                ReInitializeDragging = false;
-                await JsModule.InvokeVoidAsync("initialize", GetGridSelector(FirstGrid), GetGridSelector(SecondGrid));
-            }
-        }
+    void Grid_ItemsDroppedKeepIndicies(GridItemsDroppedEventArgs args) {
+        var droppedItem = (GridDataItem)args.DroppedItems[0];
+        SecondGridItems.Remove(droppedItem);
+        var targetItem = (GridDataItem)args.TargetItem;
+        var index = targetItem != null
+            ? FirstGridItems.IndexOf(targetItem) + (args.DropPosition == GridItemDropPosition.After ? 1 : 0)
+            : FirstGridItems.Count;
+        FirstGridItems.Insert(index, droppedItem);
     }
 
-    void Grid_CustomizeElement(GridCustomizeElementEventArgs e) {
-        if(e.ElementType == GridElementType.DataRow)
-            e.Attributes["data-visible-index"] = e.VisibleIndex;
+    void Grid_ItemsDroppedDiscardIndicies(GridItemsDroppedEventArgs args) {
+        var droppedItem = (GridDataItem)args.DroppedItems[0];
+        FirstGridItems.Remove(droppedItem);
+        SecondGridItems.Insert(SecondGridItems.Count, droppedItem);
     }
-
-    [JSInvokable]
-    public void MoveGridRow(int draggableRowVisibleIndex, bool fromFirstGrid) {
-        var sourceGrid = fromFirstGrid ? FirstGrid : SecondGrid;
-        var sourceItems = fromFirstGrid ? FirstGridItems : SecondGridItems;
-        var targetItems = fromFirstGrid ? SecondGridItems : FirstGridItems;
-
-        var sourceItem = (GridDataItem)sourceGrid.GetDataItem(draggableRowVisibleIndex);
-        sourceItems.Remove(sourceItem);
-        targetItems.Add(sourceItem);
-
-        ReInitializeDragging = true;
-        StateHasChanged();
-    }
-
-    static string GetGridSelector(IGrid grid) {
-        return string.Join(
-            string.Empty,
-            grid.CssClass
-                .Split(" ")
-                .Where(i => !string.IsNullOrWhiteSpace(i))
-                .Select(i => "." + i.Trim())
-        );
-    }
-
-    public record GridDataItem(string Name);
 }
