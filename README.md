@@ -6,7 +6,7 @@
 
 # Blazor Grid - Incorporate Drag and Drop Support
 
-The DevExpress Blazor Grid supports drag and drop operations.
+The DevExpress Blazor Grid supports drag-and-drop operations.
 
 ![Drag between two grids](result.png)
 
@@ -31,7 +31,7 @@ To let users drag rows between components, do the following:
 The [DropTargetMode](https://docs.devexpress.devx/Blazor/DevExpress.Blazor.DxGrid.DropTargetMode) property specifies drop position indication style: 
 
 - A specific location defined by the [TargetItem](https://docs.devexpress.com/Blazor/DevExpress.Blazor.GridItemsDroppedEventArgs.TargetItem) and [DropPosition](https://docs.devexpress.com/Blazor/DevExpress.Blazor.GridItemsDroppedEventArgs.DropPosition) properties.
-- The entire data area. You need to implement a custom insertion logic (for example, if your data is sorted or grouped) in the [ItemsDropped](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.ItemsDropped) event handler. 
+- The entire data area. You need to implement custom insertion logic (for example, if your data is sorted or grouped) in the [ItemsDropped](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.ItemsDropped) event handler. 
 
 You can test this usage scenario on the **Between** page.
 
