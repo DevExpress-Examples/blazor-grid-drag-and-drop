@@ -9,7 +9,7 @@
         <DxGrid Data="FirstGridItems"
                 AllowDragRows="true"
                 AllowedDropTarget="GridAllowedDropTarget.External"
-                ItemsDropped="Grid_ItemsDroppedKeepIndicies"
+                ItemsDropped="FirstGrid_ItemsDropped"
                 AllowSort="false">
             <Columns>
                 <DxGridDataColumn FieldName="Name" />
@@ -22,7 +22,7 @@
                 AllowDragRows="true"
                 AllowedDropTarget="GridAllowedDropTarget.External"
                 DropTargetMode="GridDropTargetMode.Component"
-                ItemsDropped="Grid_ItemsDroppedDiscardIndicies"
+                ItemsDropped="SecondGrid_ItemsDropped"
                 AllowSort="false">
             <Columns>
                 <DxGridDataColumn FieldName="Name" />
@@ -32,8 +32,6 @@
 </div>
 
 @code {
-    IGrid FirstGrid { get; set; }
-    IGrid SecondGrid { get; set; }
     ObservableCollection<GridDataItem> FirstGridItems { get; set; }
     ObservableCollection<GridDataItem> SecondGridItems { get; set; }
     public record GridDataItem(string Name);
@@ -59,17 +57,14 @@
         );
     }
 
-    void Grid_ItemsDroppedKeepIndicies(GridItemsDroppedEventArgs args) {
+    async Task FirstGrid_ItemsDropped(GridItemsDroppedEventArgs args) {
         var droppedItem = (GridDataItem)args.DroppedItems[0];
         SecondGridItems.Remove(droppedItem);
-        var targetItem = (GridDataItem)args.TargetItem;
-        var index = targetItem != null
-            ? FirstGridItems.IndexOf(targetItem) + (args.DropPosition == GridItemDropPosition.After ? 1 : 0)
-            : FirstGridItems.Count;
+        var index = await args.GetTargetDataSourceIndexAsync();
         FirstGridItems.Insert(index, droppedItem);
     }
 
-    void Grid_ItemsDroppedDiscardIndicies(GridItemsDroppedEventArgs args) {
+    void SecondGrid_ItemsDropped(GridItemsDroppedEventArgs args) {
         var droppedItem = (GridDataItem)args.DroppedItems[0];
         FirstGridItems.Remove(droppedItem);
         SecondGridItems.Insert(SecondGridItems.Count, droppedItem);

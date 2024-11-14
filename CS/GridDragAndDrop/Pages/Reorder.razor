@@ -34,13 +34,10 @@
         );
     }
 
-    void Grid_ItemsDropped(GridItemsDroppedEventArgs args) {
+    async Task Grid_ItemsDropped(GridItemsDroppedEventArgs args) {
         var droppedItem = (GridDataItem)args.DroppedItems[0];
         Items.Remove(droppedItem);
-        var targetItem = (GridDataItem)args.TargetItem;
-        var index = targetItem != null
-            ? Items.IndexOf(targetItem) + (args.DropPosition == GridItemDropPosition.After ? 1 : 0)
-            : Items.Count;
+        var index = await args.GetTargetDataSourceIndexAsync();
         Items.Insert(index, droppedItem);
     }
 }
