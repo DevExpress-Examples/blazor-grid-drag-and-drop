@@ -29,7 +29,7 @@ To let users drag rows between components, do the following:
 - Set the [AllowDragRows](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.AllowDragRows) property to `true`.
 - Set the [AllowedDropTarget](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.AllowedDropTarget) to `External`. You can use `All` if you also want to allow row reordering.
 
-The [DropTargetMode](https://docs.devexpress.devx/Blazor/DevExpress.Blazor.DxGrid.DropTargetMode) property specifies drop position indication style: 
+The [DropTargetMode](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.DropTargetMode) property specifies drop position indication style: 
 
 - A specific location defined by the [TargetItem](https://docs.devexpress.com/Blazor/DevExpress.Blazor.GridItemsDroppedEventArgs.TargetItem) and [DropPosition](https://docs.devexpress.com/Blazor/DevExpress.Blazor.GridItemsDroppedEventArgs.DropPosition) properties.
 - The entire data area. You need to implement custom insertion logic (for example, if your data is sorted or grouped) in the [ItemsDropped](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.ItemsDropped) event handler. 
